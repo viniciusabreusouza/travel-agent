@@ -14,13 +14,13 @@ os.environ["OPENAI_MODEL_NAME"] = 'gpt-4o'
 os.environ["SERPER_API_KEY"] = settings.SERPER_API_KEY
 
 class TravelAgency:
-    def __init__(self, origin, destination, date_range, interests, visited_cities, preferred_destination):
+    def __init__(self, origin, destination, date_range, interests, visited_cities, preferred_currency):
         self.destination = destination
         self.origin = origin
         self.interests = interests
         self.date_range = date_range
         self.visited_cities = visited_cities
-        self.preferred_destination = preferred_destination
+        self.preferred_currency = preferred_currency
 
     def run(self):
         agents = TripAgents()
@@ -50,6 +50,7 @@ class TravelAgency:
             self.origin,
             self.interests,
             self.date_range,
+            self.preferred_currency
         )
 
         crew = Crew(
@@ -97,11 +98,17 @@ if __name__ == "__main__":
         """)
     )
 
-    preferred_destination = input(
+    preferred_currency = input(
         dedent("""
-            preferred destination travel (beach, mountain, etc)?
+            Which currency you would like to receive the result?
         """)
     )
+
+    # preferred_destination = input(
+    #     dedent("""
+    #         preferred destination travel (beach, mountain, etc)?
+    #     """)
+    # )
 
     
 
@@ -111,7 +118,7 @@ if __name__ == "__main__":
         date_range, 
         interests, 
         visited_cities,
-        preferred_destination
+        preferred_currency
     )
     result = travel_agency.run()
     print("\n\n########################")

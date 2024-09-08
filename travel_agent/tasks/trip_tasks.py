@@ -9,26 +9,31 @@ class TripTasks:
             description=dedent(f"""
                 Analyze and select the best city for the trip based 
                 on specific criteria such as weather patterns, seasonal
-                events, and travel costs & Hotels for a place to stay.
+                events, and the most important, travel costs & Hotels costs for a place to stay.
                 This task involves comparing multiple cities, considering factors like current weather
                 conditions, upcoming cultural or seasonal events, and
                 overall travel expenses and Hotels for Staying. 
-                Use the information about the best cities that the traveler already visited to find similar cities.
+                Use the information about the best cities that the traveler already visited to find more similar cities.
                 
+                You MUST consider the Flight price and Hotel price between the cities and choose the cheaper one.
+
                 Your final answer must be a detailed
                 report on the chosen city, and everything you found out
                 about it, including the actual flight costs,Hotels, weather 
                 forecast and attractions.
                 {self.__tip_section()}
 
+                You must describe why the other cities are not chosen.
+
                 Traveling from: {origin}
                 City Options: {cities}
-                Trip Date: {range}
+                Trip Start and End Dates: {range}
                 Traveler Interests: {interests}
                 Traveler Best Cities Already Traveled: {visited_cities}
             """),
             agent=agent,
-            expected_output="Detailed report on the chosen city including flight costs, weather forecast,Hotel Names and Prices in the City and attractions"
+            expected_output="Detailed report on the chosen city including flight costs, weather forecast,Hotel Names and Prices in the City and attractions",
+            output_file="identify_task.md"
         )
 
     def gather_task(self, agent, origin, interests, range):
@@ -44,29 +49,32 @@ class TripTasks:
                 This guide should provide a thorough overview of what 
                 the city has to offer, including hidden gems, cultural
                 hotspots, must-visit landmarks, weather forecasts, and
-                high level costs.
+                low level costs.
                 
                 The final answer must be a comprehensive city guide, 
                 rich in cultural insights and practical tips, 
-                tailored to enhance the travel experience.
+                tailored to enhance the travel experience for all days of the range {range}.
                 {self.__tip_section()}
 
-                Trip Date: {range}
+                Trip Start and End Dates: {range}
                 Traveling from: {origin}
                 Traveler Interests: {interests}
             """),
             agent=agent,
-            expected_output="Comprehensive city guide including hidden gems, cultural hotspots, and practical travel tips"
+            expected_output="Comprehensive city guide including hidden gems, cultural hotspots, and practical travel tips",
+            output_file="gather_task.md"
         )
 
-    def plan_task(self, agent, origin, interests, range):
+    def plan_task(self, agent, origin, interests, range, preferred_currency):
         return Task(
             description=dedent(f"""
-                Expand this guide into a full 7-day travel 
-                itinerary with detailed per-day plans, including 
+                Expand this guide into a full travel 
+                itinerary in the range {range} with detailed per-day plans, including 
                 weather forecasts, places to eat, packing suggestions, 
                 and a budget breakdown.
                 
+                You MUST share the flight company and the links to buy the flight tickets.
+
                 You MUST suggest actual places to visit, actual hotels 
                 to stay and actual restaurants to go to.
                 
@@ -81,43 +89,16 @@ class TripTasks:
                 TRIP EVER. Be specific and give it a reason why you picked
                 each place, what makes them special! {self.__tip_section()}
 
-                Trip Date: {range}
+                Use the currency {preferred_currency} to show the values in the final result.
+
+                Trip Start and End Dates: {range}
                 Traveling from: {origin}
                 Traveler Interests: {interests}
             """),
             agent=agent,
-            expected_output="Complete expanded travel plan with daily schedule, weather conditions, packing suggestions, and budget breakdown"
+            expected_output="Complete expanded travel plan with links to buy the flight tickets in the cheapest air company, daily schedule, weather conditions, packing suggestions, and budget breakdown",
+            output_file="plan_task.md"
         )
     
-    # def _task(self, agent, origin, interests, range):
-    #     return Task(
-    #         description=dedent(f"""
-    #             Expand this guide into a full 7-day travel 
-    #             itinerary with detailed per-day plans, including 
-    #             weather forecasts, places to eat, packing suggestions, 
-    #             and a budget breakdown.
-                
-    #             You MUST suggest actual places to visit, actual hotels 
-    #             to stay and actual restaurants to go to.
-                
-    #             This itinerary should cover all aspects of the trip, 
-    #             from arrival to departure, integrating the city guide
-    #             information with practical travel logistics.
-                
-    #             Your final answer MUST be a complete expanded travel plan,
-    #             formatted as markdown, encompassing a daily schedule,
-    #             anticipated weather conditions, recommended clothing and
-    #             items to pack, and a detailed budget, ensuring THE BEST
-    #             TRIP EVER. Be specific and give it a reason why you picked
-    #             each place, what makes them special! {self.__tip_section()}
-
-    #             Trip Date: {range}
-    #             Traveling from: {origin}
-    #             Traveler Interests: {interests}
-    #         """),
-    #         agent=agent,
-    #         expected_output="Complete expanded travel plan with daily schedule, weather conditions, packing suggestions, and budget breakdown"
-    #     )
-
     def __tip_section(self):
         return "If you do your BEST WORK, I'll tip you $100!"

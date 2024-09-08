@@ -1,1 +1,5 @@
 .env
+travel_agent/__pycache__/
+travel_agent/tasks/__pycache__/
+travel_agent/tools/__pycache__/
+travel_agent/agents/__pycache__/
