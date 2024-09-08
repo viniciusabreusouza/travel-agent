@@ -2,11 +2,17 @@
 name = "travel-agent"
 version = "0.1.0"
 description = ""
-authors = ["Vinicius Abreu <vabreu@testreach.com>"]
+authors = ["Vinicius Abreu"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.12.*"
+python-dotenv = "^1.0.1"
+crewai = "^0.55.2"
+langchain-community = "^0.2.16"
+crewai-tools = "^0.12.0"
+pydantic-settings = "^2.4.0"
+ipython = "^8.27.0"
 
 
 [build-system]
